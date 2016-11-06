@@ -15,9 +15,9 @@ export default class AddTodo1 extends Component {
 
   render() {
     return (
-      <View style={{padding:100}}>
-        <TextInput style={styles.input} value="11111" onChangeText={(t) => this.handleValue(t)}/>
-        <TouchableHighlight onPress={(e) => this.handleClick(e)}>
+      <View style={styles.wrapper}>
+        <TextInput style={styles.input} placeholder={'请输入待办事项'} onChangeText={(t) => this.handleValue(t)}/>
+        <TouchableHighlight style={styles.button} onPress={(e) => this.handleClick(e)}>
           <Text>添加</Text>
         </TouchableHighlight>
       </View>
@@ -38,7 +38,24 @@ export default class AddTodo1 extends Component {
 
 
 let styles = {
+  wrapper:{
+    marginLeft:15,
+    marginRight:15,
+    marginTop:40,
+    marginBottom:20,
+    flexDirection:'row'
+  },
   input: {
-    width: 120,
-  }
+   flex:1,
+    height:30,
+    borderColor:'gray',
+    borderWidth:1,
+  },
+  button:{
+    marginLeft:5,
+    borderWidth:1,
+    paddingLeft:2,
+    paddingRight:2,
+    justifyContent:'center'
+  },
 }

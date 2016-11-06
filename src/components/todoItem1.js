@@ -9,13 +9,21 @@ export default class TodoItem1 extends Component {
   };
 
   _computeStyle() {
+    let style = {
+      fontSize: 14,
+      marginTop: 10,
+      marginLeft: 15
+    };
+    if (this.props.completed) {
+      style.textDecorationLine = 'line-through'
+    }
 
-
+    return style;
   };
 
   render() {
     return (
-      <Text onPress={this.props.onClick} style={{textDecoration:'lineThrough'}}>
+      <Text onPress={this.props.onClick} style={this._computeStyle()}>
         {this.props.text}
       </Text>
     )

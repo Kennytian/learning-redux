@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { addTodo, toggleTodo, setVisibilityFilter, VisibilityFilters } from './actions/action1';
 import App from './containers/app';
 import  Reducer from './reducers/reducer1';
 

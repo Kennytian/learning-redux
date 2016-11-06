@@ -13,20 +13,20 @@ export default class Footer1 extends Component {
 
   _renderFilter(filter, name) {
     if (filter === this.props.filter) {
-      return name;
+      return `\t${name}`;
     }
 
     return (
-      <Text onPress={(e) => this.props.onFilterChange(filter)}>
-        {name}
+      <Text style={{marginLeft: 15}} onPress={(e) => this.props.onFilterChange(filter)}>
+        {`\t${name}`}
       </Text>
     )
   }
 
   render() {
     return (
-      <Text>
-        Show: {this._renderFilter('SHOW_ALL', 'All')}
+      <Text style={style.text}>
+        筛选: {this._renderFilter('SHOW_ALL', 'All')}
         {this._renderFilter('SHOW_COMPLETED', 'Completed')}
         {this._renderFilter('SHOW_ACTIVE', 'Active')}
       </Text>
@@ -34,3 +34,9 @@ export default class Footer1 extends Component {
   }
 }
 
+let style = {
+  text: {
+    marginTop: 10,
+    marginLeft: 10
+  }
+}

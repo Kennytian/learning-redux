@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import TodoItem1 from './todoItem1';
 
 export  default class TodoList1 extends Component {
-  static  propTypes = {
+  static propTypes = {
     onTodoClick: PropTypes.func.isRequired,
     todos: PropTypes.arrayOf(PropTypes.shape({
       text: PropTypes.string.isRequired,
@@ -16,7 +16,8 @@ export  default class TodoList1 extends Component {
       <View>
         {
           this.props.todos.map((item, index) => {
-            <TodoItem1 key={index} onClick={() => this.props.onTodoClick(index)} {...item} />
+            console.debug('props.todos.map-todo:',item);
+           return  <TodoItem1 key={index} onClick={() => this.props.onTodoClick(index)} {...item} />
           })
         }
       </View>

@@ -1,19 +1,67 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import AddTodo from './../components/addTodo1';
 import TodoList from './../components/todoList1';
 import Footer from './../components/footer1';
+import { addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters } from './../actions/action1';
 
-export default class App extends Component {
+class App extends Component {
+  static propTypes = {
+    visibleTodos: PropTypes.arrayOf(PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired
+    })),
+    visibilityFilter: PropTypes.oneOf([
+      'SHOW_ALL',
+      'SHOW_COMPLETED',
+      'SHOW_ACTIVE'
+    ]).isRequired
+  };
+
   render() {
+    const {dispatch, visibleTodos, visibilityFilter} = this.props;
     return (
       <View>
-        <AddTodo onAddClick={text => console.log(text)}/>
+        <AddTodo onAddClick={text => {
+          let result = `待办：${text}于${new Date()}`;
+          console.log('AddTodo text:', result);
+          console.debug('this.props:', this.props);
+          dispatch(addTodo(result))
+        }}/>
 
-        <TodoList todos={[{text: 'Use Redux', completed: true}, {text: 'Learn to connect it to React', completed: false}]} onTodoClick={todo => console.log('todo clicked!')}/>
+        <TodoList todos={visibleTodos} onTodoClick={index => {
+          console.log('TodoList: todo clicked:', visibleTodos[index]);
+          console.debug('this.props:', this.props);
+          dispatch(toggleTodo(index))
+        }}/>
 
-        <Footer filter='SHOW_ALL' onFilterChange={filter => console.log('filter change', filter)}/>
+        <Footer
+          filter={visibilityFilter}
+          onFilterChange={nextFilter =>
+            dispatch(setVisibilityFilter(nextFilter))
+          }/>
       </View>
     )
   }
 }
+
+function selectTodos(todos, filter) {
+  switch (filter) {
+    case VisibilityFilters.SHOW_ALL:
+      return todos;
+    case VisibilityFilters.SHOW_COMPLETED:
+      return todos.filter(todo => todo.completed);
+    case VisibilityFilters.SHOW_ACTIVE:
+      return todos.filter(todo => !todo.completed);
+  }
+}
+
+function select(state) {
+  return {
+    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
+    visibilityFilter: state.visibilityFilter
+  }
+}
+
+export default connect(select)(App);
