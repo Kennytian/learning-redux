@@ -27,13 +27,13 @@ class App extends Component {
           let result = `待办：${text}于${new Date()}`;
           console.log('AddTodo text:', result);
           console.debug('this.props:', this.props);
-          dispatch(addTodo(result))
+          dispatch(addTodo(result));
         }}/>
 
         <TodoList todos={visibleTodos} onTodoClick={index => {
           console.log('TodoList: todo clicked:', visibleTodos[index]);
           console.debug('this.props:', this.props);
-          dispatch(toggleTodo(index))
+          dispatch(toggleTodo(index));
         }}/>
 
         <Footer
@@ -42,18 +42,18 @@ class App extends Component {
             dispatch(setVisibilityFilter(nextFilter))
           }/>
       </View>
-    )
+    );
   }
 }
 
 function selectTodos(todos, filter) {
   switch (filter) {
-    case VisibilityFilters.SHOW_ALL:
-      return todos;
-    case VisibilityFilters.SHOW_COMPLETED:
-      return todos.filter(todo => todo.completed);
-    case VisibilityFilters.SHOW_ACTIVE:
-      return todos.filter(todo => !todo.completed);
+  case VisibilityFilters.SHOW_ALL:
+    return todos;
+  case VisibilityFilters.SHOW_COMPLETED:
+    return todos.filter(todo => todo.completed);
+  case VisibilityFilters.SHOW_ACTIVE:
+    return todos.filter(todo => !todo.completed);
   }
 }
 
@@ -61,7 +61,7 @@ function select(state) {
   return {
     visibleTodos: selectTodos(state.todos, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter
-  }
+  };
 }
 
 export default connect(select)(App);

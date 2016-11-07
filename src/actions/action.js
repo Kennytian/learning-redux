@@ -4,6 +4,8 @@ export const COMPLETE_TODO = 'COMPLETE_TODO';
 export const TOGGLE_TODO = 'TOGGLE_TODO';
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
 
+export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT';
+
 // 其它的常量
 export const VisibilityFilters = {
   SHOW_ALL: 'SHOW_ALL',
@@ -16,26 +18,33 @@ export function addTodo(text) {
   return {
     type: ADD_TODO,
     text
-  }
+  };
 }
 
 export function completeTodo(index) {
   return {
     type: COMPLETE_TODO,
     index,
-  }
+  };
 }
 
 export function toggleTodo(index) {
   return {
     type: TOGGLE_TODO,
     index,
-  }
+  };
 }
 
 export function setVisibilityFilter(filter) {
   return {
     type: SET_VISIBILITY_FILTER,
     filter
-  }
+  };
+}
+
+export function selectSubreddit(subreddit) {
+  return {
+    type: SELECT_SUBREDDIT,
+    subreddit
+  };
 }
