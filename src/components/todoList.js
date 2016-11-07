@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
-import TodoItem1 from './todoItem1';
+import TodoItem1 from './todoItem';
 
 export  default class TodoList1 extends Component {
   static propTypes = {

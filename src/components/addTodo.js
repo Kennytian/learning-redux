@@ -16,9 +16,9 @@ export default class AddTodo1 extends Component {
   render() {
     return (
       <View style={styles.wrapper}>
-        <TextInput style={styles.input} placeholder={'请输入待办事项'} onChangeText={(t) => this.handleValue(t)}/>
+        <TextInput style={styles.input} placeholder={'Please input a todo item'} onChangeText={(t) => this.handleValue(t)}/>
         <TouchableHighlight style={styles.button} onPress={(e) => this.handleClick(e)}>
-          <Text>添加</Text>
+          <Text>Add</Text>
         </TouchableHighlight>
       </View>
     )

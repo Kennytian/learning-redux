@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import AddTodo from './../components/addTodo1';
-import TodoList from './../components/todoList1';
-import Footer from './../components/footer1';
-import { addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters } from './../actions/action1';
+import AddTodo from './../components/addTodo';
+import TodoList from './../components/todoList';
+import Footer from '../components/footer';
+import { addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters } from './../actions/action';
 
 class App extends Component {
   static propTypes = {

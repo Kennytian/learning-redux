@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ADD_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters }from '../actions/action1';
+import { ADD_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters }from '../actions/action';
 
 let {SHOW_ALL}  = VisibilityFilters;
 

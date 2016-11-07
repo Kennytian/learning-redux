@@ -26,7 +26,7 @@ export default class Footer1 extends Component {
   render() {
     return (
       <Text style={style.text}>
-        筛选: {this._renderFilter('SHOW_ALL', 'All')}
+        Filter: {this._renderFilter('SHOW_ALL', 'All')}
         {this._renderFilter('SHOW_COMPLETED', 'Completed')}
         {this._renderFilter('SHOW_ACTIVE', 'Active')}
       </Text>
