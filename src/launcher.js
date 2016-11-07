@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -5,12 +7,14 @@ import {
   Text,
   View
 } from 'react-native';
-import { createStore } from 'redux';
+
+// import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './containers/app';
-import  Reducer from './reducers/reducer1';
+// import Reducer from './reducers/reducer';
+// let store = createStore(Reducer);
+import store from './stores/store';
 
-let store = createStore(Reducer);
 
 export default class react036 extends Component {
   render() {
