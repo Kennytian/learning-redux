@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import AddTodo from './../components/addTodo';
 import TodoList from './../components/todoList';
 import Footer from '../components/footer';
-import { addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters } from './../actions/action';
+import {
+  addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters,
+  selectSubreddit, fetchPosts
+} from './../actions/action';
 
 class App extends Component {
   static propTypes = {
@@ -41,6 +44,10 @@ class App extends Component {
           onFilterChange={nextFilter =>
             dispatch(setVisibilityFilter(nextFilter))
           }/>
+        <Text onPress={() => {
+          //dispatch(selectSubreddit('reactjs'));
+          dispatch(fetchPosts('reactjs'));
+        }}> List </Text>
       </View>
     );
   }
