@@ -16,7 +16,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-import todoReducer from './../reducers/todo';
+import rootReducer from './../reducers/todo';
 
 let loggerMiddleware = createLogger(
   /* {
@@ -48,12 +48,6 @@ let loggerMiddleware = createLogger(
     },
     logger: console,
     logErrors: true,
-    collapsed: (getState, action) => {
-      action.type === 'FORM_CHANGE';
-    },
-    predicate: (getState, action) => {
-      action.type !== 'AUTH_REMOVE_TOKEN'; // 如果给 predicate 指定了 function，每调用一次 action，都会被调用一次
-    },
     stateTransformer: (state) => {
       // if() { some judgement code}
       return state;
@@ -66,20 +60,18 @@ let loggerMiddleware = createLogger(
       // if() {some judgement code}
       return error;
     },
-    // titleFormatter: null,
-    diff: true,
-    diffPredicate: undefined,
+    diff: true
   }
 );
 
-let enhancer = __DEV__ ? loggerMiddleware : undefined;
+let enhancer = __DEV__ ? applyMiddleware(
+  thunkMiddleware, // 允许我们 dispatch() 函数
+  loggerMiddleware // 用来打印 action 日志
+) : applyMiddleware(thunkMiddleware)
 
 let store = createStore(
-  todoReducer,
-  applyMiddleware(
-    thunkMiddleware, // 允许我们 dispatch() 函数
-    enhancer  // 用来打印 action 日志
-  )
+  rootReducer,
+  enhancer
 );
 
 export default store;

@@ -57,7 +57,7 @@ class App extends Component {
     const {dispatch, getState, replaceReducer, subscribe} = this.props;
 
     let unSubscribe = subscribe(() => {
-      console.debug('print-unSubscribe:', getState());
+      // console.debug('print-unSubscribe:', getState());
     });
 
     dispatch(addTodo('Learn about actions'));
