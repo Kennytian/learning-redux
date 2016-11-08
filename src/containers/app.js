@@ -23,19 +23,19 @@ class App extends Component {
   };
 
   render() {
+    console.debug('print-render-this.props', this.props);
+    // 通过调用 connect() 注入
     const {dispatch, visibleTodos, visibilityFilter} = this.props;
     return (
       <View>
         <AddTodo onAddClick={text => {
           let result = `待办：${text}于${new Date()}`;
           console.log('AddTodo text:', result);
-          console.debug('this.props:', this.props);
           dispatch(addTodo(result));
         }}/>
 
         <TodoList todos={visibleTodos} onTodoClick={index => {
           console.log('TodoList: todo clicked:', visibleTodos[index]);
-          console.debug('this.props:', this.props);
           dispatch(toggleTodo(index));
         }}/>
 
@@ -51,16 +51,48 @@ class App extends Component {
       </View>
     );
   }
+
+  componentDidMount() {
+    console.debug('print-componentDidMount-this.props', this.props);
+    const {dispatch, getState, replaceReducer, subscribe} = this.props;
+
+    let unSubscribe = subscribe(() => {
+      console.debug('print-unSubscribe:', getState());
+    });
+
+    dispatch(addTodo('Learn about actions'));
+    dispatch(addTodo('Learn about reducers'));
+    dispatch(addTodo('Learn about store'));
+    dispatch(toggleTodo(0));
+    dispatch(toggleTodo(1));
+    dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
+
+    // 停止监听 state 更新
+    unSubscribe();
+  }
+
+  componentWillMount() {
+    console.debug('print-componentWillMount-this.props', this.props);
+  }
+
+  componentWillReceiveProps(preProps, nextProps) {
+    console.debug('print-componentWillReceiveProps-nextProps', nextProps);
+  }
+
+  shouldComponentUpdate(props) {
+    console.debug('print-shouldComponentUpdate-props', props);
+    return true;
+  }
 }
 
 function selectTodos(todos, filter) {
   switch (filter) {
-  case VisibilityFilters.SHOW_ALL:
-    return todos;
-  case VisibilityFilters.SHOW_COMPLETED:
-    return todos.filter(todo => todo.completed);
-  case VisibilityFilters.SHOW_ACTIVE:
-    return todos.filter(todo => !todo.completed);
+    case VisibilityFilters.SHOW_ALL:
+      return todos;
+    case VisibilityFilters.SHOW_COMPLETED:
+      return todos.filter(todo => todo.completed);
+    case VisibilityFilters.SHOW_ACTIVE:
+      return todos.filter(todo => !todo.completed);
   }
 }
 
