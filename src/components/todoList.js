@@ -16,8 +16,7 @@ export  default class TodoList1 extends Component {
       <View>
         {
           this.props.todos.map((item, index) => {
-            console.debug('props.todos.map-todo:',item);
-            return  <TodoItem1 key={index} onClick={() => this.props.onTodoClick(index)} {...item} />;
+            return <TodoItem1 key={index} onClick={() => this.props.onTodoClick(index)} {...item} />;
           })
         }
       </View>

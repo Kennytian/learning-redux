@@ -23,7 +23,7 @@ function todos(state = [], action) {
       completed: false
     }];
   case TOGGLE_TODO:
-    console.debug('todos-TOGGLE_TODO:', action);
+    // console.debug('todos-TOGGLE_TODO:', action);
     return state.map((todo, index) => {
       if (index === action.index) {
         return Object.assign({}, todo, {
@@ -38,7 +38,7 @@ function todos(state = [], action) {
 }
 
 function selectedSubreddit(state = 'reactjs', action) {
-  console.debug('print-selectedSubreddit', action);
+  // console.debug('print-selectedSubreddit', action);
   switch (action.type) {
   case SELECT_SUBREDDIT:
     return action.subreddit;
