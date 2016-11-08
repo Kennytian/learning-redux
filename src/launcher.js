@@ -13,7 +13,7 @@ import { Provider } from 'react-redux';
 import App from './containers/app';
 // import Reducer from './reducers/reducer';
 // let store = createStore(Reducer);
-import store from './stores/store';
+import store from './stores/root';
 
 
 export default class react036 extends Component {

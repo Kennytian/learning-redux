@@ -15,18 +15,18 @@ export default class TodoItem1 extends Component {
       marginLeft: 15
     };
     if (this.props.completed) {
-      style.textDecorationLine = 'line-through'
+      style.textDecorationLine = 'line-through';
     }
 
     return style;
-  };
+  }
 
   render() {
     return (
       <Text onPress={this.props.onClick} style={this._computeStyle()}>
         {this.props.text}
       </Text>
-    )
+    );
   }
 }
 

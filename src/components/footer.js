@@ -20,7 +20,7 @@ export default class Footer1 extends Component {
       <Text style={{marginLeft: 15}} onPress={(e) => this.props.onFilterChange(filter)}>
         {`\t${name}`}
       </Text>
-    )
+    );
   }
 
   render() {
@@ -30,7 +30,7 @@ export default class Footer1 extends Component {
         {this._renderFilter('SHOW_COMPLETED', 'Completed')}
         {this._renderFilter('SHOW_ACTIVE', 'Active')}
       </Text>
-    )
+    );
   }
 }
 
@@ -39,4 +39,4 @@ let style = {
     marginTop: 10,
     marginLeft: 10
   }
-}
+};

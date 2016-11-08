@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react';
 import { View, Text, TextInput, TouchableHighlight } from 'react-native';
 
 export default class AddTodo1 extends Component {
@@ -21,7 +21,7 @@ export default class AddTodo1 extends Component {
           <Text>Add</Text>
         </TouchableHighlight>
       </View>
-    )
+    );
   }
 
   handleClick(e) {
@@ -32,7 +32,7 @@ export default class AddTodo1 extends Component {
   handleValue(text) {
     this.setState({
       data: text.trim()
-    })
+    });
   }
 }
 
@@ -46,7 +46,7 @@ let styles = {
     flexDirection:'row'
   },
   input: {
-   flex:1,
+    flex:1,
     height:30,
     borderColor:'gray',
     borderWidth:1,
@@ -58,4 +58,4 @@ let styles = {
     paddingRight:2,
     justifyContent:'center'
   },
-}
+};
