@@ -67,11 +67,10 @@ let loggerMiddleware = createLogger(
 let enhancer = __DEV__ ? applyMiddleware(
   thunkMiddleware, // 允许我们 dispatch() 函数
   loggerMiddleware // 用来打印 action 日志
-) : applyMiddleware(thunkMiddleware)
+) : applyMiddleware(thunkMiddleware);
 
-let store = createStore(
-  rootReducer,
-  enhancer
-);
+let initialState = {};
 
-export default store;
+let rootStore = createStore(rootReducer, initialState, enhancer);
+
+export default rootStore;

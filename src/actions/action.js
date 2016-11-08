@@ -46,7 +46,7 @@ export function setVisibilityFilter(filter) {
 }
 
 export function selectSubreddit(subreddit) {
-  console.debug('print-selectSubreddit',subreddit);
+  console.debug('print-selectSubreddit', subreddit);
   return {
     type: SELECT_SUBREDDIT,
     subreddit
@@ -68,7 +68,7 @@ export function requestPosts(subreddit) {
 }
 
 export function receivePosts(subreddit, json) {
-  console.debug('print-receivePosts-json',json);
+  __DEV__ && console.debug('print-receivePosts-json', json);
   return {
     type: RECEIVE_POSTS,
     subreddit,
@@ -79,14 +79,11 @@ export function receivePosts(subreddit, json) {
 
 export function fetchPosts(subreddit) {
   return function (dispatch) {
-    console.debug('print-fetchPosts-111111',subreddit);
     dispatch(requestPosts(subreddit));
-    console.debug('print-fetchPosts-222222',subreddit);
-
     return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
     .then(response => response.json())
     .then(json => {
-      console.debug('print-fetchPosts-json',json);
+      __DEV__ && console.debug('print-fetchPosts-json', json);
       dispatch(receivePosts(subreddit, json));
     });
   };
