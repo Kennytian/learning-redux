@@ -7,13 +7,13 @@ import {
 
 import { Provider } from 'react-redux';
 import App from './containers/app';
-import rootStore from './stores/rootStore';
+import store from './stores/configureStore';
 
 export default class react036 extends Component {
   render() {
     return (
-      <Provider store={rootStore}>
-        <App subscribe={rootStore.subscribe} getState={rootStore.getState}/>
+      <Provider store={store}>
+        <App subscribe={store.subscribe} getState={store.getState}/>
       </Provider>
     );
   }

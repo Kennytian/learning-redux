@@ -16,7 +16,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-import rootReducer from './../reducers/todo';
+import rootReducer from '../reducers/rootReducer';
 
 let loggerMiddleware = createLogger(
   /* {
