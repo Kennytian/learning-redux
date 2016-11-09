@@ -46,7 +46,6 @@ export function setVisibilityFilter(filter) {
 }
 
 export function selectSubreddit(subreddit) {
-  console.debug('print-selectSubreddit', subreddit);
   return {
     type: SELECT_SUBREDDIT,
     subreddit
@@ -60,20 +59,20 @@ export function invalidateSubreddit(subreddit) {
   };
 }
 
-export function requestPosts(subreddit) {
+function requestPosts(subreddit) {
   return {
     type: REQUEST_POSTS,
     subreddit
   };
 }
 
-export function receivePosts(subreddit, json) {
+function receivePosts(subreddit, json) {
   __DEV__ && console.debug('print-receivePosts-json', json);
   return {
     type: RECEIVE_POSTS,
     subreddit,
     posts: json.data.children.map(child => child.data),
-    receiveAt: Date.now()
+    receivedAt: Date.now()
   };
 }
 

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TextInput, TouchableHighlight } from 'react-native';
 
-export default class AddTodo1 extends Component {
+export default class AddTodo extends Component {
   static propTypes = {
     onAddClick: PropTypes.func.isRequired
   };
