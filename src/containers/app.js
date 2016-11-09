@@ -9,7 +9,7 @@ import Footer from '../components/footer';
 
 import {
   addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters,
-  selectSubreddit, fetchPosts
+  selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit
 } from './../actions/action';
 
 class App extends Component {
@@ -49,13 +49,15 @@ class App extends Component {
           }/>
         <Text onPress={() => {
           //dispatch(selectSubreddit('reactjs'));
-          dispatch(fetchPosts('reactjs'));
+          dispatch(fetchPostsIfNeeded('reactjs'));
         }}> List </Text>
       </View>
     );
   }
 
   componentDidMount() {
+    console.debug('print-this.props:', this.props);
+
     const {dispatch, getState, subscribe} = this.props;
 
     let unSubscribe = subscribe(() => {

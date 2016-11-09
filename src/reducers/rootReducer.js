@@ -75,7 +75,9 @@ function postsBySubreddit(state = {}, action) {
 
 let todoApp = combineReducers({
   visibilityFilter,
-  todos
+  todos,
+  postsBySubreddit,
+  selectedSubreddit
 });
 
 export default todoApp;
