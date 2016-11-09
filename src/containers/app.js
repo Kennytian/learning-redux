@@ -7,8 +7,10 @@ import AddTodo from './../components/addTodo';
 import TodoList from './../components/todoList';
 import Footer from '../components/footer';
 
-import { addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters,
-  selectSubreddit, fetchPosts } from './../actions/action';
+import {
+  addTodo, completeTodo, toggleTodo, setVisibilityFilter, VisibilityFilters,
+  selectSubreddit, fetchPosts
+} from './../actions/action';
 
 class App extends Component {
   static propTypes = {
@@ -26,7 +28,7 @@ class App extends Component {
   render() {
     __DEV__ && console.debug('print-render-this.props', this.props);
     // 通过调用 connect() 注入
-    const {dispatch, visibleTodos, visibilityFilter, addTodo1} = this.props;
+    const {dispatch, visibleTodos, visibilityFilter} = this.props;
     return (
       <View>
         <AddTodo onAddClick={text => {
@@ -36,7 +38,7 @@ class App extends Component {
         }}/>
 
         <TodoList todos={visibleTodos} onTodoClick={index => {
-          console.log('TodoList: todo clicked:', visibleTodos[index]);
+          __DEV__ && console.log('TodoList: todo clicked:', visibleTodos[index]);
           dispatch(toggleTodo(index));
         }}/>
 
@@ -91,12 +93,12 @@ class App extends Component {
 
 function selectTodos(todos, filter) {
   switch (filter) {
-  case VisibilityFilters.SHOW_ALL:
-    return todos;
-  case VisibilityFilters.SHOW_COMPLETED:
-    return todos.filter(todo => todo.completed);
-  case VisibilityFilters.SHOW_ACTIVE:
-    return todos.filter(todo => !todo.completed);
+    case VisibilityFilters.SHOW_ALL:
+      return todos;
+    case VisibilityFilters.SHOW_COMPLETED:
+      return todos.filter(todo => todo.completed);
+    case VisibilityFilters.SHOW_ACTIVE:
+      return todos.filter(todo => !todo.completed);
   }
 }
 
