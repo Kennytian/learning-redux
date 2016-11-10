@@ -86,6 +86,7 @@ function fetchPosts(subreddit) {
 
 function shouldFetchPosts(state, subreddit) {
   let posts = state.postsBySubreddit[subreddit];
+  __DEV__ && console.debug('print-posts', posts);
   if (!posts) {
     return true;
   }

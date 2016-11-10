@@ -7,7 +7,10 @@ import {
 
 import { Provider } from 'react-redux';
 import App from './containers/app';
-import store from './stores/configureStore';
+import configureStore from './stores/configureStore';
+import XhrRequest from './utils/xhrRequest';
+
+let store = configureStore();
 
 export default class react036 extends Component {
   render() {
@@ -18,5 +21,7 @@ export default class react036 extends Component {
     );
   }
 }
+
+XhrRequest.run();
 
 AppRegistry.registerComponent('react036', () => react036);

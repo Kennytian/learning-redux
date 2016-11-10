@@ -64,13 +64,16 @@ let loggerMiddleware = createLogger(
   }
 );
 
-let enhancer = __DEV__ ? applyMiddleware(
-  thunkMiddleware, // 允许我们 dispatch() 函数
-  loggerMiddleware // 用来打印 action 日志
-) : applyMiddleware(thunkMiddleware);
-
 let initialState = {};
 
-let rootStore = createStore(rootReducer, initialState, enhancer);
+// 开发环境打印 action 日志
+let developMiddleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
 
-export default rootStore;
+// 线上环境不打印 action 日志
+let productionMiddleware = applyMiddleware(thunkMiddleware);
+
+let createStoreWithMiddleware = __DEV__ ? developMiddleware(createStore) : productionMiddleware(createStore);
+
+export default function configureStore(initialState) {
+  return createStoreWithMiddleware(rootReducer, initialState);
+}
