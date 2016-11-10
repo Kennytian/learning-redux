@@ -6,7 +6,8 @@
   },
   "parser": "babel-eslint",
   "globals": {
-    "__DEV__" : true
+    "__DEV__": true,
+    "XMLHttpRequest": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
@@ -16,10 +17,7 @@
     "no-console": 0,
     "no-undef": 2,
     "no-unused-vars": 0,
-    "indent": [
-      "error",
-      2
-    ],
+    "indent": [2, 2, {"SwitchCase": 1}],
     "linebreak-style": [
       "error",
       "unix"

@@ -46,7 +46,6 @@ export function setVisibilityFilter(filter) {
 }
 
 export function selectSubreddit(subreddit) {
-  console.debug('print-selectSubreddit', subreddit);
   return {
     type: SELECT_SUBREDDIT,
     subreddit
@@ -60,31 +59,49 @@ export function invalidateSubreddit(subreddit) {
   };
 }
 
-export function requestPosts(subreddit) {
+function requestPosts(subreddit) {
   return {
     type: REQUEST_POSTS,
     subreddit
   };
 }
 
-export function receivePosts(subreddit, json) {
-  __DEV__ && console.debug('print-receivePosts-json', json);
+function receivePosts(subreddit, json) {
   return {
     type: RECEIVE_POSTS,
     subreddit,
     posts: json.data.children.map(child => child.data),
-    receiveAt: Date.now()
+    receivedAt: Date.now()
   };
 }
 
-export function fetchPosts(subreddit) {
-  return function (dispatch) {
+function fetchPosts(subreddit) {
+  return dispatch => {
     dispatch(requestPosts(subreddit));
-    return fetch(`http://www.subreddit.com/r/${subreddit}.json`)
+    return fetch(`http://www.reddit.com/r/${subreddit}.json`)
     .then(response => response.json())
-    .then(json => {
-      __DEV__ && console.debug('print-fetchPosts-json', json);
-      dispatch(receivePosts(subreddit, json));
-    });
+    .then(json => dispatch(receivePosts(subreddit, json)));
+  };
+}
+
+function shouldFetchPosts(state, subreddit) {
+  let posts = state.postsBySubreddit[subreddit];
+  __DEV__ && console.debug('print-posts', posts);
+  if (!posts) {
+    return true;
+  }
+
+  if (posts.isFetching) {
+    return false;
+  }
+
+  return posts.didInvalidate;
+}
+
+export function fetchPostsIfNeeded(subreddit) {
+  return (dispatch, getState) => {
+    if (shouldFetchPosts(getState(), subreddit)) {
+      return dispatch(fetchPosts(subreddit));
+    }
   };
 }
