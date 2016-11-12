@@ -12,7 +12,7 @@ import XhrRequest from './utils/xhrRequest';
 
 let store = configureStore();
 
-export default class react036 extends Component {
+export default class learningRedux extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -24,4 +24,4 @@ export default class react036 extends Component {
 
 XhrRequest.run();
 
-AppRegistry.registerComponent('react036', () => react036);
+AppRegistry.registerComponent('learningRedux', () => learningRedux);
