@@ -10,15 +10,17 @@
  通过 subscribe(listener) 返回的函数注销监听器。
  再次强调一下 Redux 应用只有一个单一的 store。当需要拆分数据处理逻辑时，你应该使用 reducer 组合 而不是创建多个 store
  */
-
-
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { AsyncStorage } from 'react-native';
+import { applyMiddleware, createStore, compose } from 'redux';
+import { autoRehydrate, persistStore, purgeStoredState } from 'redux-persist';
+import reduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-import rootReducer from '../reducers/rootReducer';
+import reducer from '../reducers/rootReducer';
 
-let loggerMiddleware = createLogger(
+let reduxMiddleware = [reduxThunk];
+
+let reduxLogger = createLogger(
   /* {
    level = 'log': 'log' | 'console' | 'warn' | 'error' | 'info', // console's level
    duration = false: Boolean, // Print the duration of each action?
@@ -64,16 +66,52 @@ let loggerMiddleware = createLogger(
   }
 );
 
-let initialState = {};
+if (__DEV__) {
+  // 开发环境打印 action 日志
+  reduxMiddleware.push(reduxLogger);
+}
 
-// 开发环境打印 action 日志
-let developMiddleware = applyMiddleware(thunkMiddleware, loggerMiddleware);
+export let store = null;
 
-// 线上环境不打印 action 日志
-let productionMiddleware = applyMiddleware(thunkMiddleware);
+let enhancers = compose(...[
+  applyMiddleware(...reduxMiddleware),
+  autoRehydrate()
+]);
 
-let createStoreWithMiddleware = __DEV__ ? developMiddleware(createStore) : productionMiddleware(createStore);
+function isHot() {
+  if (module.hot) {
+    module.hot.accept(() => {
+      let nextRootReducer = reducer.default;
+      store.replaceReducer(nextRootReducer);
+    });
+  }
+}
 
-export default function configureStore(initialState) {
-  return createStoreWithMiddleware(rootReducer, initialState);
+export default function configureStore(initialState = {}) {
+  store = createStore(reducer, initialState, enhancers);
+
+  isHot();
+
+  setPersistStore();
+
+  return store;
+}
+
+function setPersistStore() {
+  // more information: http://gold.xitu.io/entry/57cac7b167f3560057bb00a7
+  persistStore(store, {
+    blacklist: ['someKey'], // 黑名单数组，可以忽略指定 reducers 中的 key
+    // whitelist: ['auth'], // 白名单数组，一旦设置，其他的 key 都会被忽略。
+    storage: AsyncStorage,
+    // transforms: // 在 rehydration 和 storage 阶段被调用的转换器
+    // debounce: // storage 操作被调用的频度
+    // store: // redux store 我们要存储的 store
+    // config: // 对象
+  }, () => {
+
+  });
+}
+
+export function resetPersistStore() {
+  purgeStoredState({storage: AsyncStorage});
 }
