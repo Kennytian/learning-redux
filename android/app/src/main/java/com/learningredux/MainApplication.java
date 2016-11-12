@@ -1,4 +1,4 @@
-package com.react036;
+package com.learningredux;
 
 import android.app.Application;
 import android.util.Log;
