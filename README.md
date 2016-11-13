@@ -9,6 +9,7 @@ Learning Redux for React Native
 * Add redux-thunk, redux-logger(judgement develop or production mode)
 * Add ESLint code checking
 * Add Pre-commit checking
+* Add redux-persist persistence
 
 #### Edition1
 * Base simple redux sample
