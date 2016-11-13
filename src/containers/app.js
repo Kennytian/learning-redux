@@ -31,8 +31,7 @@ class App extends Component {
     const {dispatch, visibleTodos, visibilityFilter} = this.props;
     return (
       <View>
-        <AddTodo onAddClick={text => {
-          let result = `待办：${text}于${new Date()}`;
+        <AddTodo onAddClick={text => {let result = `待办：${text}于${new Date()}`;
           __DEV__ && console.debug('AddTodo text:', result);
           dispatch(addTodo(result));
         }}/>
@@ -58,7 +57,7 @@ class App extends Component {
   componentDidMount() {
     console.debug('print-this.props:',this.props);
 
-    const {dispatch, getState, subscribe}=this.props;
+ const {dispatch, getState, subscribe}=this.props;
 
     let unSubscribe = subscribe(() => {
       // console.debug('print-unSubscribe:', getState());
