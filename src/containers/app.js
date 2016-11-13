@@ -47,7 +47,7 @@ class App extends Component {
           onFilterChange={nextFilter =>
             dispatch(setVisibilityFilter(nextFilter))
           }/>
-        <Text onPress={() => {
+        <Text onPress={()=>{
           //dispatch(selectSubreddit('reactjs'));
           dispatch(fetchPostsIfNeeded('reactjs'));
         }}> List </Text>
@@ -56,9 +56,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.debug('print-this.props:', this.props);
+    console.debug('print-this.props:',this.props);
 
-    const {dispatch, getState, subscribe} = this.props;
+    const {dispatch, getState, subscribe}=this.props;
 
     let unSubscribe = subscribe(() => {
       // console.debug('print-unSubscribe:', getState());
