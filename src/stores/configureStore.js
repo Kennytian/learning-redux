@@ -16,7 +16,7 @@ import { autoRehydrate, persistStore, purgeStoredState } from 'redux-persist';
 import reduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-import reducer from '../reducers/rootReducer';
+import rootReducer from '../reducers/rootReducer';
 
 let reduxMiddleware = [reduxThunk];
 
@@ -79,16 +79,19 @@ let enhancers = compose(...[
 ]);
 
 function isHot() {
+  // https://github.com/gaearon/redux-devtools/issues/233#issuecomment-176210686
+  // Enable Webpack hot module replacement for reducers
   if (module.hot) {
-    module.hot.accept(() => {
-      let nextRootReducer = reducer.default;
+    let reducerPath = '../reducers/rootReducer';
+    module.hot.accept(reducerPath, () => {
+      let nextRootReducer = require(reducerPath).default;
       store.replaceReducer(nextRootReducer);
     });
   }
 }
 
 export default function configureStore(initialState = {}) {
-  store = createStore(reducer, initialState, enhancers);
+  store = createStore(rootReducer, initialState, enhancers);
 
   isHot();
 
@@ -100,11 +103,11 @@ export default function configureStore(initialState = {}) {
 function setPersistStore() {
   // more information: http://gold.xitu.io/entry/57cac7b167f3560057bb00a7
   persistStore(store, {
-    blacklist: ['someKey'], // 黑名单数组，可以忽略指定 reducers 中的 key
+    blacklist: ['signIn', 'someKey'], // 黑名单数组，可以忽略指定 reducers 中的 key
     // whitelist: ['auth'], // 白名单数组，一旦设置，其他的 key 都会被忽略。
     storage: AsyncStorage,
     // transforms: // 在 rehydration 和 storage 阶段被调用的转换器
-    // debounce: // storage 操作被调用的频度
+    debounce: 100 // storage 操作被调用的频度, ms
     // store: // redux store 我们要存储的 store
     // config: // 对象
   }, () => {
