@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
+import { fromJS, is } from 'immutable';
+import { createDeepEqualSelector } from '../utils/reselect';
 
 import AddTodo from './../components/addTodo';
 import TodoList from './../components/todoList';
@@ -14,39 +16,44 @@ import {
 
 class App extends Component {
   static propTypes = {
-    visibleTodos: PropTypes.arrayOf(PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      completed: PropTypes.bool.isRequired
+    visibleTodos     : PropTypes.arrayOf(PropTypes.shape({
+      text      : PropTypes.string.isRequired,
+      completed : PropTypes.bool.isRequired
     })),
-    visibilityFilter: PropTypes.oneOf([
+    visibilityFilter : PropTypes.oneOf([
       'SHOW_ALL',
       'SHOW_COMPLETED',
       'SHOW_ACTIVE'
     ]).isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
-    __DEV__ && console.debug('print-render-this.props', this.props);
+    // __DEV__ && console.debug('print-render-this.props', this.props);
     // 通过调用 connect() 注入
-    const {dispatch, visibleTodos, visibilityFilter} = this.props;
+    const { dispatch, visibleTodos, visibilityFilter } = this.props;
     return (
       <View>
         <AddTodo onAddClick={text => {
           let result = `待办：${text}于${new Date()}`;
           __DEV__ && console.debug('AddTodo text:', result);
           dispatch(addTodo(result));
-        }}/>
+        }} />
 
         <TodoList todos={visibleTodos} onTodoClick={index => {
           __DEV__ && console.log('TodoList: todo clicked:', visibleTodos[index]);
           dispatch(toggleTodo(index));
-        }}/>
+        }} />
 
         <Footer
           filter={visibilityFilter}
           onFilterChange={nextFilter =>
             dispatch(setVisibilityFilter(nextFilter))
-          }/>
+          } />
         <Text onPress={() => {
           //dispatch(selectSubreddit('reactjs'));
           dispatch(fetchPostsIfNeeded('reactjs'));
@@ -56,9 +63,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.debug('print-this.props:', this.props);
+    // console.debug('print-this.props:', this.props);
 
-    const {dispatch, getState, subscribe}=this.props;
+    const { dispatch, getState, subscribe }=this.props;
 
     let unSubscribe = subscribe(() => {
       // console.debug('print-unSubscribe:', getState());
@@ -81,15 +88,17 @@ class App extends Component {
 
   componentWillReceiveProps(preProps, nextProps) {
     if (__DEV__) {
-      console.debug('print-componentWillReceiveProps-preProps-nextProps:', preProps, nextProps);
+      console.debug('\n\nprint-componentWillReceiveProps-preProps:', preProps);
+      console.debug('print-componentWillReceiveProps-nextProps:', nextProps);
     }
   }
 
-  shouldComponentUpdate(props) {
+  shouldComponentUpdate(nextProps) {
+    let diff = !is(fromJS(nextProps), fromJS(this.state));
     if (__DEV__) {
-      console.debug('print-shouldComponentUpdate-props', props);
+      console.debug('\n\nprint-shouldComponentUpdate-nextProps, diff:', nextProps, diff);
     }
-    return true;
+    return diff;
   }
 }
 
@@ -105,12 +114,18 @@ function selectTodos(todos, filter) {
 }
 
 // 只要 Redux store 发生改变，mapStateToProps 函数就会被调用
-function mapStateToProps(state) {
-  return {
-    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
-  };
-}
+let mapStateToProps = createDeepEqualSelector(
+  [
+    state => state.todos,
+    state => state.visibilityFilter,
+  ],
+  (todos, filter) => {
+    return {
+      visibleTodos     : selectTodos(todos, filter),
+      visibilityFilter : filter
+    };
+  }
+);
 
 // http://cn.redux.js.org/docs/react-redux/api.html
 export default connect(mapStateToProps)(App);
