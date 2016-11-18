@@ -3,18 +3,28 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "lint": "eslint --ext .js ./src --fix",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "lint": "eslint --ext .js ./src --fix"
+    "start:ios": "react-native run-ios",
+    "start:5": "react-native run-ios --simulator=\"iPhone 5\"",
+    "start:6sp": "react-native run-ios --simulator=\"iPhone 6s Plus\"",
+    "start:7": "react-native run-ios --simulator=\"iPhone 7\"",
+    "start:7p": "react-native run-ios --simulator=\"iPhone 7 Plus\"",
+    "start:android": "react-native run-android",
+    "test": "jest"
   },
   "dependencies": {
+    "immutable": "^3.8.1",
     "react": "15.3.2",
     "react-native": "0.37.0",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
+    "redux-immutable": "^3.0.8",
     "redux-logger": "^2.7.4",
     "redux-persist": "^4.0.0-alpha7",
-    "redux-thunk": "^2.1.0"
+    "redux-persist-immutable": "^4.0.1",
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.4"
   },
   "jest": {
     "preset": "jest-react-native"
