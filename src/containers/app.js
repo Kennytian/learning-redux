@@ -16,44 +16,39 @@ import {
 
 class App extends Component {
   static propTypes = {
-    visibleTodos     : PropTypes.arrayOf(PropTypes.shape({
-      text      : PropTypes.string.isRequired,
-      completed : PropTypes.bool.isRequired
+    visibleTodos: PropTypes.arrayOf(PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired
     })),
-    visibilityFilter : PropTypes.oneOf([
+    visibilityFilter: PropTypes.oneOf([
       'SHOW_ALL',
       'SHOW_COMPLETED',
       'SHOW_ACTIVE'
     ]).isRequired
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     // __DEV__ && console.debug('print-render-this.props', this.props);
     // 通过调用 connect() 注入
-    const { dispatch, visibleTodos, visibilityFilter } = this.props;
+    const {dispatch, visibleTodos, visibilityFilter} = this.props;
     return (
       <View>
         <AddTodo onAddClick={text => {
           let result = `待办：${text}于${new Date()}`;
           __DEV__ && console.debug('AddTodo text:', result);
           dispatch(addTodo(result));
-        }} />
+        }}/>
 
         <TodoList todos={visibleTodos} onTodoClick={index => {
           __DEV__ && console.log('TodoList: todo clicked:', visibleTodos[index]);
           dispatch(toggleTodo(index));
-        }} />
+        }}/>
 
         <Footer
           filter={visibilityFilter}
           onFilterChange={nextFilter =>
             dispatch(setVisibilityFilter(nextFilter))
-          } />
+          }/>
         <Text onPress={() => {
           //dispatch(selectSubreddit('reactjs'));
           dispatch(fetchPostsIfNeeded('reactjs'));
@@ -65,7 +60,7 @@ class App extends Component {
   componentDidMount() {
     // console.debug('print-this.props:', this.props);
 
-    const { dispatch, getState, subscribe }=this.props;
+    const {dispatch, getState, subscribe}=this.props;
 
     let unSubscribe = subscribe(() => {
       // console.debug('print-unSubscribe:', getState());
@@ -121,8 +116,8 @@ let mapStateToProps = createDeepEqualSelector(
   ],
   (todos, filter) => {
     return {
-      visibleTodos     : selectTodos(todos, filter),
-      visibilityFilter : filter
+      visibleTodos: selectTodos(todos, filter),
+      visibilityFilter: filter
     };
   }
 );

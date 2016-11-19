@@ -3,6 +3,10 @@ Learning Redux for React Native
 
 ### Feature items
 
+#### Edition3
+* Apply immutable, reselect in App page
+
+
 #### Edition2
 * Update to asynchronous redux
 * Add network request
@@ -15,6 +19,10 @@ Learning Redux for React Native
 * Base simple redux sample
 
 ### Changelog
+##### Nov 18, 2016
+* Update the package.json, add some scripts items for launch iOS simulators
+* Add immutable, immutable-redux, reselect packages
+
 ##### Nov 12, 2016
 * Add pre-commit code checking
 * Rename project to learningRedux
