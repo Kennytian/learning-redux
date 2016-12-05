@@ -11,6 +11,7 @@
  再次强调一下 Redux 应用只有一个单一的 store。当需要拆分数据处理逻辑时，你应该使用 reducer 组合 而不是创建多个 store
  */
 import { AsyncStorage } from 'react-native';
+import { Iterable, Map } from 'immutable';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { autoRehydrate, persistStore, purgeStoredState } from 'redux-persist';
 import reduxThunk from 'redux-thunk';
@@ -51,7 +52,9 @@ let reduxLogger = createLogger(
     logger: console,
     logErrors: true,
     stateTransformer: (state) => {
-      // if() { some judgement code}
+      if (Iterable.isIterable(state)) {
+        return state.toJS();
+      }
       return state;
     },
     actionTransformer: (action) => {
@@ -62,7 +65,11 @@ let reduxLogger = createLogger(
       // if() {some judgement code}
       return error;
     },
-    diff: true
+    diff: true,
+    diffPredicate: (getState, action) => (
+      action.type === 'SEARCH_USERS' ||
+      action.type === 'SEARCH_ORDERS'
+    )
   }
 );
 
@@ -78,7 +85,7 @@ let enhancers = compose(...[
   autoRehydrate()
 ]);
 
-function isHot() {
+function hotReloading() {
   // https://github.com/gaearon/redux-devtools/issues/233#issuecomment-176210686
   // Enable Webpack hot module replacement for reducers
   if (module.hot) {
@@ -90,10 +97,10 @@ function isHot() {
   }
 }
 
-export default function configureStore(initialState = {}) {
+export default function configureStore(initialState = Map()) {
   store = createStore(rootReducer, initialState, enhancers);
 
-  isHot();
+  hotReloading();
 
   setPersistStore();
 
