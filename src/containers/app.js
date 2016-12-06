@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
-import { fromJS, is } from 'immutable';
 import { createDeepEqualSelector } from '../utils/reselect';
+import { deepCompare } from '../utils/optimizer';
 
 import AddTodo from './../components/addTodo';
 import TodoList from './../components/todoList';
@@ -86,36 +86,8 @@ class App extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this._deepCompare(this, nextProps, nextState);
+    return deepCompare(this, nextProps, nextState);
   }
-
-  _deepCompare(instance, nextProps, nextState) {
-
-    const thisProps = instance.props || {}
-    const thisState = instance.state || {}
-
-    if (Object.keys(thisProps).length !== Object.keys(nextProps).length || Object.keys(thisState).length !== Object.keys(nextState).length) {
-      __DEV__ && console.debug('_deepCompare length diff')
-      return true;
-    }
-
-    for (const key in nextProps) {
-      if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
-        __DEV__ && console.debug('_deepCompare nextProps diff(key):', key)
-        return true;
-      }
-    }
-
-    for (const key in nextState) {
-      if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
-        __DEV__ && console.debug('_deepCompare nextState diff(key):', key)
-        return true;
-      }
-    }
-
-    return false;
-  }
-
 }
 
 function selectTodos(todos, filter) {
