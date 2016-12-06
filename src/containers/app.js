@@ -81,20 +81,41 @@ class App extends Component {
 
   }
 
-  componentWillReceiveProps(preProps, nextProps) {
-    if (__DEV__) {
-      console.debug('\n\nprint-componentWillReceiveProps-preProps:', preProps);
-      console.debug('print-componentWillReceiveProps-nextProps:', nextProps);
-    }
+  componentWillReceiveProps(nextProps) {
+    __DEV__ && console.debug('print-componentWillReceiveProps-nextProps:', nextProps);
   }
 
-  shouldComponentUpdate(nextProps) {
-    let diff = !is(fromJS(nextProps), fromJS(this.state));
-    if (__DEV__) {
-      console.debug('\n\nprint-shouldComponentUpdate-nextProps, diff:', nextProps, diff);
-    }
-    return diff;
+  shouldComponentUpdate(nextProps, nextState) {
+    return this._deepCompare(this, nextProps, nextState);
   }
+
+  _deepCompare(instance, nextProps, nextState) {
+
+    const thisProps = instance.props || {}
+    const thisState = instance.state || {}
+
+    if (Object.keys(thisProps).length !== Object.keys(nextProps).length || Object.keys(thisState).length !== Object.keys(nextState).length) {
+      __DEV__ && console.debug('_deepCompare length diff')
+      return true;
+    }
+
+    for (const key in nextProps) {
+      if (thisProps[key] !== nextProps[key] || !is(thisProps[key], nextProps[key])) {
+        __DEV__ && console.debug('_deepCompare nextProps diff(key):', key)
+        return true;
+      }
+    }
+
+    for (const key in nextState) {
+      if (thisState[key] !== nextState[key] || !is(thisState[key], nextState[key])) {
+        __DEV__ && console.debug('_deepCompare nextState diff(key):', key)
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
 
 function selectTodos(todos, filter) {
