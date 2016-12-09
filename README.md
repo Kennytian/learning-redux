@@ -4,8 +4,11 @@ Learning Redux for React Native
 ### Feature items
 
 #### Edition3
-* Apply immutable, reselect in App page
 
+* Collapsed output redux logging when specified action type
+* Add shouldComponentUpdate optimized function
+* Optimized the redux configureStore
+* Apply immutable, reselect in App page
 
 #### Edition2
 * Update to asynchronous redux
