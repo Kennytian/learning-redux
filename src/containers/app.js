@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
-import { fromJS, is } from 'immutable';
 import { createDeepEqualSelector } from '../utils/reselect';
+import { deepCompare } from '../utils/optimizer';
 
 import AddTodo from './../components/addTodo';
 import TodoList from './../components/todoList';
@@ -81,19 +81,12 @@ class App extends Component {
 
   }
 
-  componentWillReceiveProps(preProps, nextProps) {
-    if (__DEV__) {
-      console.debug('\n\nprint-componentWillReceiveProps-preProps:', preProps);
-      console.debug('print-componentWillReceiveProps-nextProps:', nextProps);
-    }
+  componentWillReceiveProps(nextProps) {
+    __DEV__ && console.debug('print-componentWillReceiveProps-nextProps:', nextProps);
   }
 
-  shouldComponentUpdate(nextProps) {
-    let diff = !is(fromJS(nextProps), fromJS(this.state));
-    if (__DEV__) {
-      console.debug('\n\nprint-shouldComponentUpdate-nextProps, diff:', nextProps, diff);
-    }
-    return diff;
+  shouldComponentUpdate(nextProps, nextState) {
+    return deepCompare(this, nextProps, nextState);
   }
 }
 

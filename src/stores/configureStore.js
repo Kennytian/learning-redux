@@ -11,7 +11,7 @@
  再次强调一下 Redux 应用只有一个单一的 store。当需要拆分数据处理逻辑时，你应该使用 reducer 组合 而不是创建多个 store
  */
 import { AsyncStorage } from 'react-native';
-import { Iterable, Map } from 'immutable';
+import { Iterable } from 'immutable';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { autoRehydrate, persistStore, purgeStoredState } from 'redux-persist';
 import reduxThunk from 'redux-thunk';
@@ -51,6 +51,10 @@ let reduxLogger = createLogger(
     },
     logger: console,
     logErrors: true,
+    collapsed : (getState, action) => (
+      action.type === 'REACT_NATIVE_ROUTER_FLUX_FOCUS' ||
+      action.type === 'REACT_NATIVE_ROUTER_FLUX_RESET'
+    ),
     stateTransformer: (state) => {
       if (Iterable.isIterable(state)) {
         return state.toJS();
@@ -67,8 +71,9 @@ let reduxLogger = createLogger(
     },
     diff: true,
     diffPredicate: (getState, action) => (
-      action.type === 'SEARCH_USERS' ||
-      action.type === 'SEARCH_ORDERS'
+      action.type === 'ADD_TODO' ||
+      action.type === 'SET_VISIBILITY_FILTER' ||
+      action.type === 'SHOW_ACTIVE'
     )
   }
 );
@@ -97,7 +102,7 @@ function hotReloading() {
   }
 }
 
-export default function configureStore(initialState = Map()) {
+export default function configureStore(initialState = {}) {
   store = createStore(rootReducer, initialState, enhancers);
 
   hotReloading();
