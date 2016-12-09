@@ -51,6 +51,10 @@ let reduxLogger = createLogger(
     },
     logger: console,
     logErrors: true,
+    collapsed : (getState, action) => (
+      action.type === 'REACT_NATIVE_ROUTER_FLUX_FOCUS' ||
+      action.type === 'REACT_NATIVE_ROUTER_FLUX_RESET'
+    ),
     stateTransformer: (state) => {
       if (Iterable.isIterable(state)) {
         return state.toJS();
